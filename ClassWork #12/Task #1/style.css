@@ -1,0 +1,14 @@
+#b1 {
+  border-radius: 6px;
+  background: cyan;
+  border: 2px solid black;
+}
+
+#p1 {
+  border: 1px solid black;
+  width: fit-content;
+  padding: 5px;
+  border-radius: 5px;
+  background: blue;
+  color: orange;
+}

@@ -1,14 +1,28 @@
-#b1 {
-  border-radius: 6px;
-  background: cyan;
-  border: 2px solid black;
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-#p1 {
+h1 {
+  align-items: center;
+}
+
+#buttonForDate {
+  width: 120px;
+  height: 30px;
+  border: 2px solid black;
+  border-radius: 6px;
+}
+
+.placeForNewDate {
+  display: none;
   border: 1px solid black;
   width: fit-content;
   padding: 5px;
   border-radius: 5px;
-  background: blue;
-  color: orange;
+}
+
+.text-color {
+  color: brown;
 }

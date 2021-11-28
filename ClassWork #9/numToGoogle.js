@@ -1,4 +1,4 @@
-sconst numToGoogle = (arr) => {
+const numToGoogle = (arr) => {
   let final = "";
   let lastPoint = "";
   for (let j = 0; j < arr.length; j++) {

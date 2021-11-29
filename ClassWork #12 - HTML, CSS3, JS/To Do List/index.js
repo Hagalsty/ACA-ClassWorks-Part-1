@@ -2,6 +2,7 @@ const addBtn = document.getElementById("addBtn");
 const toDoInput = document.getElementById("toDoInput");
 const toDos = document.getElementById("toDos");
 let numberForUniqueId = 0;
+const state = [];
 
 const toDoCreate = () => {
   const div = document.createElement("div");
@@ -11,7 +12,12 @@ const toDoCreate = () => {
   const doneBtn = document.createElement("button");
   const allSpans = document.querySelectorAll(".showenInList");
   const lastSpan = allSpans[allSpans.length - 1];
-  if (!toDoInput.value) return;
+
+  if (!toDoInput.value.trim()) {
+    toDoInput.value = "";
+    alert("Wrong input");
+    return;
+  }
 
   numberForUniqueId++;
   div.className = "labelContainer";
@@ -53,7 +59,6 @@ const toDoCreate = () => {
     }
     const textNode = document.getElementById(id);
     textNode.style.textDecoration = "line-through";
-    // console.log(this.parentNode.previousSibling);
   });
 
   buttonsContainer.append(doneBtn, rmBtn);

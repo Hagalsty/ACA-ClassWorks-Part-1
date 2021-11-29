@@ -1,13 +1,56 @@
+import { checkArray } from "./helpers/arrayCheck.js";
+
 const name = document.getElementById("name");
 const age = document.getElementById("age");
 const grade = document.getElementById("averageGrade");
 const tbody = document.getElementsByTagName("tbody");
 const ageTh = document.getElementById("ageTh");
-const students = [];
+let temp_state = [];
+const states = {
+  studentsInfo: [
+    {
+      name: "Taron",
+      age: 21,
+      grade: 80,
+    },
+    {
+      name: "Gevorg",
+      age: 24,
+      grade: 70,
+    },
+    {
+      name: "Hayk",
+      age: 22,
+      grade: 90,
+    },
+  ],
+};
+
+function render(items) {
+  tbody[0].innerHTML = "";
+  items.forEach(({ name, age, grade }) => {
+    const trElement = document.createElement("tr");
+    const tdName = document.createElement("td");
+    const tdAge = document.createElement("td");
+    const tdGrade = document.createElement("td");
+
+    tdName.innerText = name;
+    tdName.className = "nameTd";
+    tdAge.innerText = age;
+    tdAge.className = "ageTd";
+    tdGrade.innerText = grade;
+    tdGrade.className = "gradeTd";
+
+    trElement.append(tdName, tdAge, tdGrade);
+    tbody[0].append(trElement);
+  });
+}
+
+render(states.studentsInfo);
 
 document.addEventListener("keypress", function (e) {
   if (e.key != "Enter") return;
-
+  let tempCheck = false;
   const nameVal = name.value;
   const ageVal = age.value;
   const gradeVal = grade.value;
@@ -37,105 +80,44 @@ document.addEventListener("keypress", function (e) {
   name.value = "";
   age.value = "";
   grade.value = "";
-
-  students.push({
+  if (temp_state.length) {
+    temp_state.push({
+      name: nameVal,
+      age: ageVal,
+      grade: gradeVal,
+    });
+    render(temp_state);
+    tempCheck = true;
+  }
+  states.studentsInfo.push({
     name: nameVal,
     age: ageVal,
     grade: gradeVal,
   });
 
-  const trElement = document.createElement("tr");
-  const tdName = document.createElement("td");
-  const tdAge = document.createElement("td");
-  const tdGrade = document.createElement("td");
-
-  tdName.innerText = nameVal;
-  tdName.className = "nameTd";
-  tdAge.innerText = ageVal;
-  tdAge.className = "ageTd";
-  tdGrade.innerText = gradeVal;
-  tdGrade.className = "gradeTd";
-
-  trElement.append(tdName, tdAge, tdGrade);
-  tbody[0].append(trElement);
+  if (!tempCheck) render(states.studentsInfo);
 });
 
 ageTh.addEventListener("click", function () {
-  const names = document.getElementsByClassName("nameTd");
   const ages = document.getElementsByClassName("ageTd");
-  const grades = document.getElementsByClassName("gradeTd");
-  const newTbody = document.createElement("tbody");
   const ageArr = [];
 
   for (let i = 0; i < ages.length; i++) {
     ageArr.push(ages[i].innerText);
   }
 
-  const checkArray = (arr) => {
-    if (arr.every((x, i) => i === 0 || x >= arr[i - 1])) {
-      return "Ascending";
-    }
-    if (arr.every((x, i) => i === 0 || x <= arr[i - 1])) {
-      return "Descending";
-    }
-    return "Unsorted";
-  };
-
   const arrSort = checkArray(ageArr);
-
   if (arrSort == "Ascending") {
-    for (let i = ageArr.length - 1; i >= 0; i--) {
-      const trElement = document.createElement("tr");
-      const tdName = document.createElement("td");
-      const tdAge = document.createElement("td");
-      const tdGrade = document.createElement("td");
-
-      tdName.innerText = names[i].innerText;
-      tdName.className = "nameTd";
-      tdAge.innerText = ages[i].innerText;
-      tdAge.className = "ageTd";
-      tdGrade.innerText = grades[i].innerText;
-      tdGrade.className = "gradeTd";
-
-      trElement.append(tdName, tdAge, tdGrade);
-      newTbody.append(trElement);
-    }
+    temp_state = [...states.studentsInfo].sort(
+      ({ age: a }, { age: b }) => b - a
+    );
+    render(temp_state);
   } else if (arrSort == "Descending") {
-    for (let i = 0; i < students.length; i++) {
-      const trElement = document.createElement("tr");
-      const tdName = document.createElement("td");
-      const tdAge = document.createElement("td");
-      const tdGrade = document.createElement("td");
-
-      tdName.innerText = students[i].name;
-      tdName.className = "nameTd";
-      tdAge.innerText = students[i].age;
-      tdAge.className = "ageTd";
-      tdGrade.innerText = students[i].grade;
-      tdGrade.className = "gradeTd";
-
-      trElement.append(tdName, tdAge, tdGrade);
-      newTbody.append(trElement);
-    }
+    render(states.studentsInfo);
   } else {
-    const tempObj = [...students].sort((a, b) => Number(a.age) - Number(b.age));
-
-    for (let i = 0; i < tempObj.length; i++) {
-      const trElement = document.createElement("tr");
-      const tdName = document.createElement("td");
-      const tdAge = document.createElement("td");
-      const tdGrade = document.createElement("td");
-
-      tdName.innerText = tempObj[i].name;
-      tdName.className = "nameTd";
-      tdAge.innerText = tempObj[i].age;
-      tdAge.className = "ageTd";
-      tdGrade.innerText = tempObj[i].grade;
-      tdGrade.className = "gradeTd";
-
-      trElement.append(tdName, tdAge, tdGrade);
-      newTbody.append(trElement);
-    }
+    temp_state = [...states.studentsInfo].sort(
+      ({ age: a }, { age: b }) => a - b
+    );
+    render(temp_state);
   }
-  tbody[0].replaceWith(newTbody);
 });

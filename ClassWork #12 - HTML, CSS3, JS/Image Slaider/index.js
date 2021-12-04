@@ -6,6 +6,8 @@ let uniqueId;
 
 function nextSlide() {
   slideIndex += 1;
+  clearInterval(uniqueId);
+  uniqueId = setInterval(nextSlide, 2000);
   showSlide(slideIndex);
 }
 
@@ -26,12 +28,6 @@ function showSlide(num) {
 
 next.addEventListener("click", nextSlide);
 prev.addEventListener("click", prevSlide);
-slidesContainer.addEventListener("mouseover", function () {
-  clearInterval(uniqueId);
-});
-slidesContainer.addEventListener("mouseout", function () {
-  uniqueId = setInterval(nextSlide, 2000);
-});
 
 function callbackForInterval() {
   uniqueId = setInterval(nextSlide, 2000);
